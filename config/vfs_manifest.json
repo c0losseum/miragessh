@@ -1,0 +1,265 @@
+{
+  "system_info": {
+    "hostname": "prod-db-gateway-01",
+    "os_name": "Ubuntu",
+    "os_version": "22.04.3 LTS (Jammy Jellyfish)",
+    "kernel": "5.15.0-89-generic",
+    "architecture": "x86_64",
+    "uptime_start_hours_ago": 164
+  },
+  "nodes": [
+    {
+      "path": "/",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/bin",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/boot",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/dev",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/etc",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/home",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/home/ubuntu",
+      "type": "directory",
+      "owner": "ubuntu",
+      "group": "ubuntu",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/home/ubuntu/.ssh",
+      "type": "directory",
+      "owner": "ubuntu",
+      "group": "ubuntu",
+      "permissions": "drwx------"
+    },
+    {
+      "path": "/home/ubuntu/.aws",
+      "type": "directory",
+      "owner": "ubuntu",
+      "group": "ubuntu",
+      "permissions": "drwx------"
+    },
+    {
+      "path": "/root",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwx------"
+    },
+    {
+      "path": "/root/.ssh",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwx------"
+    },
+    {
+      "path": "/var",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/var/log",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/var/backups",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/tmp",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxrwxrwt"
+    },
+    {
+      "path": "/proc",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "dr-xr-xr-x"
+    },
+    {
+      "path": "/sys",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "dr-xr-xr-x"
+    },
+    {
+      "path": "/opt",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-xr-x"
+    },
+    {
+      "path": "/opt/payment-service",
+      "type": "directory",
+      "owner": "root",
+      "group": "root",
+      "permissions": "drwxr-x---"
+    },
+    {
+      "path": "/etc/hostname",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r--r--",
+      "content": "prod-db-gateway-01\n"
+    },
+    {
+      "path": "/etc/hosts",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r--r--",
+      "content": "127.0.0.1\tlocalhost\n127.0.1.1\tprod-db-gateway-01\n10.0.1.5\tprod-db-gateway-01.internal\n10.0.1.20\tprod-customer-db.internal\n10.0.1.21\tprod-redis-cache.internal\n10.0.1.30\tinternal-vault.internal\n\n# The following lines are desirable for IPv6 capable hosts\n::1     localhost ip6-localhost ip6-loopback\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\n"
+    },
+    {
+      "path": "/etc/os-release",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r--r--",
+      "content": "PRETTY_NAME=\"Ubuntu 22.04.3 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.3 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy\n"
+    },
+    {
+      "path": "/etc/issue",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r--r--",
+      "content": "Ubuntu 22.04.3 LTS \\n \\l\n\n"
+    },
+    {
+      "path": "/etc/passwd",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r--r--",
+      "content": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/usr/sbin/nologin\nman:x:6:12:man:/var/cache/man:/usr/sbin/nologin\nlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin\nmail:x:8:8:mail:/var/mail:/usr/sbin/nologin\nnews:x:9:9:news:/var/spool/news:/usr/sbin/nologin\nuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin\nproxy:x:13:13:proxy:/bin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nbackup:x:34:34:backup:/var/backups:/usr/sbin/nologin\nlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin\nirc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin\nnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin\nsystemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin\nsystemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin\nmessagebus:x:102:105::/nonexistent:/usr/sbin/nologin\nsystemd-timesync:x:103:106:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin\nsyslog:x:104:110::/home/syslog:/usr/sbin/nologin\nsshd:x:105:65534::/run/sshd:/usr/sbin/nologin\nubuntu:x:1000:1000:Ubuntu User,,,:/home/ubuntu:/bin/bash\npostgres:x:106:114:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash\n"
+    },
+    {
+      "path": "/etc/shadow",
+      "type": "file",
+      "owner": "root",
+      "group": "shadow",
+      "permissions": "-rw-r-----",
+      "content": "root:$6$kL9xY8zT$yU4v4G1Kj4i0GzZk91Z.9P0xLk03v1k2.FakeHashRootSecurityAuditToken:19620:0:99999:7:::\ndaemon:*:19620:0:99999:7:::\nbin:*:19620:0:99999:7:::\nsys:*:19620:0:99999:7:::\nubuntu:$6$a7BnV3fQ$kOp19ZLm4K0Vz9Qx8.FakeHashUbuntuHoneytokenAudit:19620:0:99999:7:::\npostgres:*:19620:0:99999:7:::\n"
+    },
+    {
+      "path": "/proc/cpuinfo",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-r--r--r--",
+      "content": "processor\t: 0\nvendor_id\t: GenuineIntel\ncpu family\t: 6\nmodel\t\t: 106\nmodel name\t: Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz\nstepping\t: 6\nmicrocode\t: 0xd0003b0\ncpu MHz\t\t: 2899.998\ncache size\t: 55296 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 4\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsave ctrans md_clear tsx_async_abort\nbogomips\t: 5799.99\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 46 bits physical, 48 bits virtual\n"
+    },
+    {
+      "path": "/proc/meminfo",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-r--r--r--",
+      "content": "MemTotal:       16384000 kB\nMemFree:        11482012 kB\nMemAvailable:   13890204 kB\nBuffers:          218940 kB\nCached:          2489124 kB\nSwapCached:            0 kB\nActive:          2912400 kB\nInactive:        1390400 kB\nSwapTotal:       2097148 kB\nSwapFree:        2097148 kB\n"
+    },
+    {
+      "path": "/proc/version",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-r--r--r--",
+      "content": "Linux version 5.15.0-89-generic (buildd@lcy02-amd64-071) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #99-Ubuntu SMP Mon Oct 30 20:42:41 UTC 2023\n"
+    },
+    {
+      "path": "/home/ubuntu/.bash_history",
+      "type": "file",
+      "owner": "ubuntu",
+      "group": "ubuntu",
+      "permissions": "-rw-------",
+      "content": "sudo apt update && sudo apt upgrade -y\ndocker ps\ncd /opt/payment-service\ngit pull origin main\nsudo systemctl restart payment-service\npsql -h 10.0.1.20 -U postgres -d customer_db\ncat /home/ubuntu/.env\nexit\n"
+    },
+    {
+      "path": "/home/ubuntu/.env",
+      "type": "file",
+      "owner": "ubuntu",
+      "group": "ubuntu",
+      "permissions": "-rw-r-----",
+      "content": "# Production Environment Variables - DO NOT SHARE\nAPP_ENV=production\nAPP_SECRET=app_sec_decoy_honeytoken_audit_948f2c\nDB_HOST=10.0.1.20\nDB_PORT=5432\nDB_NAME=customer_db\nDB_USER=pg_payment_admin\nDB_PASSWORD=P@ssw0rd9912!#VaultSecure\nAWS_ACCESS_KEY_ID=AKIA_DECOY_HONEYTOKEN_KEY\nAWS_SECRET_ACCESS_KEY=decoy_aws_secret_honeytoken_key_placeholder\nAWS_DEFAULT_REGION=us-east-1\nSTRIPE_API_KEY=stripe_decoy_honeytoken_audit_prod_99\n"
+    },
+    {
+      "path": "/home/ubuntu/.aws/credentials",
+      "type": "file",
+      "owner": "ubuntu",
+      "group": "ubuntu",
+      "permissions": "-rw-------",
+      "content": "[default]\naws_access_key_id = AKIA_DECOY_HONEYTOKEN_KEY\naws_secret_access_key = decoy_aws_secret_honeytoken_key_placeholder\nregion = us-east-1\n"
+    },
+    {
+      "path": "/root/.ssh/id_rsa",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-------",
+      "content": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAYEA3X+MIRAGE+HONEYTOKEN+PRIVATE+KEY+TRAP+918237461928374\n6182937461928374619283746192837461928374619283746192837461928374619283\n7461928374619283746192837461928374619283746192837461928374619283746192\n8374619283746192837461928374619283746192837461928374619283746192837461\n9283746192837461928374619283746192837461928374619283746192837461928374\n-----END OPENSSH PRIVATE KEY-----\n"
+    },
+    {
+      "path": "/var/backups/prod_database.sql",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r-----",
+      "content": "-- PostgreSQL database dump\n-- Dumped by pg_dump version 14.9 (Ubuntu 14.9-0ubuntu0.22.04.1)\n\nSET statement_timeout = 0;\nSET lock_timeout = 0;\nSET client_encoding = 'UTF8';\n\nCREATE TABLE customers (\n    id integer PRIMARY KEY,\n    email varchar(255) NOT NULL,\n    password_hash varchar(255) NOT NULL,\n    credit_card_last4 char(4),\n    created_at timestamp DEFAULT CURRENT_TIMESTAMP\n);\n\nINSERT INTO customers VALUES (1, 'john.doe@enterprise.com', '$2a$12$FakeBcryptHashHoneytoken1', '4242', NOW());\nINSERT INTO customers VALUES (2, 'jane.smith@enterprise.com', '$2a$12$FakeBcryptHashHoneytoken2', '1111', NOW());\n"
+    },
+    {
+      "path": "/opt/payment-service/config.json",
+      "type": "file",
+      "owner": "root",
+      "group": "root",
+      "permissions": "-rw-r-----",
+      "content": "{\n  \"service_name\": \"payment-gateway\",\n  \"port\": 8443,\n  \"environment\": \"production\",\n  \"database\": {\n    \"host\": \"10.0.1.20\",\n    \"name\": \"customer_db\",\n    \"user\": \"pg_payment_admin\"\n  },\n  \"rate_limiting\": {\n    \"enabled\": true,\n    \"max_requests_per_min\": 1000\n  }\n}\n"
+    }
+  ]
+}

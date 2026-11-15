@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  miragessh:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: miragessh-honeypot
+    restart: unless-stopped
+    ports:
+      # Map host port 22 or 2222 to honeypot SSH service
+      - "2222:2222"
+      # Web SOC Dashboard
+      - "8080:8080"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      # Persist attack recordings, logs, and host keys
+      - ./data/logs:/app/data/logs
+      - ./data/recordings:/app/data/recordings
+      - ./data/host_keys:/app/data/host_keys
+      - ./config:/app/config:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

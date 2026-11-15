@@ -1,0 +1,94 @@
+# MirageSSH Default Configuration
+# AI-Augmented Adaptive SSH Honeypot
+
+server:
+  host: "0.0.0.0"
+  port: 2222
+  banner: "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.7"
+  host_key_path: "data/host_keys/miragessh_rsa"
+  max_connections: 50
+  connection_timeout: 300 # seconds
+
+authentication:
+  # Mode options:
+  # - 'allow_all': Accept any username and password
+  # - 'tarpit_then_allow': Reject first N attempts, then allow
+  # - 'trap_credentials_only': Allow only specific creds (like root/root or admin/admin)
+  mode: "tarpit_then_allow"
+  tarpit_fail_attempts: 2 # Accept on the 3rd attempt to simulate brute force success
+  default_user: "ubuntu"
+  allowed_users:
+    - "root"
+    - "ubuntu"
+    - "admin"
+    - "support"
+    - "deploy"
+
+tarpit:
+  enabled: true
+  min_delay_ms: 250
+  max_delay_ms: 1200
+  # Apply longer latency to suspicious automated enumeration commands
+  suspicious_command_delay_ms: 2000
+
+shell:
+  hostname: "prod-db-gateway-01"
+  initial_cwd: "/home/ubuntu"
+  vfs_manifest: "config/vfs_manifest.json"
+  max_command_length: 4096
+  history_limit: 1000
+
+ai_responder:
+  enabled: true
+  # Provider: 'gemini', 'openai', or 'mock' (offline fallback)
+  provider: "gemini"
+  model: "gemini-1.5-flash"
+  api_key_env: "GEMINI_API_KEY"
+  temperature: 0.2
+  max_tokens: 1024
+  timeout_seconds: 4.0
+  # Fall back to offline mock heuristics if API fails or quota exceeded
+  fallback_to_mock: true
+
+telemetry:
+  log_level: "INFO"
+  jsonl_log_path: "data/logs/miragessh_events.jsonl"
+  text_log_path: "data/logs/miragessh.log"
+  recordings_dir: "data/recordings"
+  enable_asciinema_recording: true
+
+geoip:
+  enabled: true
+  service: "ip-api" # uses free ip-api.com json endpoint
+  cache_ttl_hours: 24
+
+honeytokens:
+  enabled: true
+  # Alert immediately if any of these files are read or written
+  paths:
+    - "/home/ubuntu/.env"
+    - "/home/ubuntu/.aws/credentials"
+    - "/root/.ssh/id_rsa"
+    - "/etc/shadow"
+    - "/var/backups/prod_database.sql"
+    - "/opt/payment-service/config.json"
+
+alerts:
+  discord:
+    enabled: false
+    webhook_url_env: "DISCORD_WEBHOOK_URL"
+  telegram:
+    enabled: false
+    bot_token_env: "TELEGRAM_BOT_TOKEN"
+    chat_id_env: "TELEGRAM_CHAT_ID"
+  generic_webhook:
+    enabled: false
+    webhook_url_env: "GENERIC_WEBHOOK_URL"
+
+web_dashboard:
+  enabled: true
+  host: "127.0.0.1"
+  port: 8080
+  auth_required: false
+  username: "admin"
+  password_env: "DASHBOARD_PASSWORD"

@@ -1,0 +1,20 @@
+# MirageSSH Dependencies
+# AI-Augmented Adaptive SSH Honeypot & Forensics Tarpit
+
+# Core SSH Daemon Engine
+paramiko>=3.4.0
+cryptography>=42.0.0
+
+# Configuration & Data Parsing
+pyyaml>=6.0.1
+pydantic>=2.6.0
+
+# Web SOC Dashboard & REST API
+fastapi>=0.110.0
+uvicorn>=0.28.0
+
+# Networking & Alert Dispatchers
+requests>=2.31.0
+
+# Testing & Quality Assurance
+pytest>=8.0.0

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MirageSSH - Threat Intelligence SOC Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            dark: '#0a0d14',
+                            card: '#111726',
+                            border: '#1e293b',
+                            accent: '#06b6d4',
+                            glow: '#38bdf8',
+                            danger: '#ef4444',
+                            warning: '#f59e0b',
+                            success: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0d14;
+            color: #f1f5f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .glow-accent {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+        }
+        .glow-danger {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+        .terminal-font {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="border-b border-cyber-border bg-cyber-card/80 backdrop-blur sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-lg bg-cyber-accent/20 border border-cyber-accent/40 flex items-center justify-center text-cyber-accent">
+                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-wide flex items-center gap-2">
+                    <span>MirageSSH</span>
+                    <span class="text-xs px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">AI HONEYPOT</span>
+                </h1>
+                <p class="text-xs text-slate-400">Adaptive Deception & Threat Intelligence Engine</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 text-xs text-slate-300 bg-cyber-dark/80 px-3 py-1.5 rounded-full border border-cyber-border">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <button onclick="refreshData()" class="p-2 rounded-lg bg-cyber-dark border border-cyber-border hover:border-cyber-accent text-slate-300 hover:text-cyber-accent transition">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 space-y-6 max-w-7xl mx-auto w-full">
+
+        <!-- Top Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-cyber-card border border-cyber-border rounded-xl p-4 glow-accent">
+                <div class="flex items-center justify-between text-slate-400 text-xs">
+                    <span>ACTIVE ATTACKERS</span>
+                    <i data-lucide="radio" class="w-4 h-4 text-emerald-400 animate-pulse"></i>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-emerald-400" id="stat-active">0</div>
+                <p class="text-xs text-slate-500 mt-1">Live honeypot sessions</p>
+            </div>
+
+            <div class="bg-cyber-card border border-cyber-border rounded-xl p-4">
+                <div class="flex items-center justify-between text-slate-400 text-xs">
+                    <span>TOTAL SESSIONS</span>
+                    <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-slate-100" id="stat-total">0</div>
+                <p class="text-xs text-slate-500 mt-1">Recorded intrusion attempts</p>
+            </div>
+
+            <div class="bg-cyber-card border border-cyber-border rounded-xl p-4">
+                <div class="flex items-center justify-between text-slate-400 text-xs">
+                    <span>UNIQUE IPS</span>
+                    <i data-lucide="globe" class="w-4 h-4 text-blue-400"></i>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-slate-100" id="stat-ips">0</div>
+                <p class="text-xs text-slate-500 mt-1">Distinct threat origins</p>
+            </div>
+
+            <div class="bg-cyber-card border border-cyber-border rounded-xl p-4 glow-danger">
+                <div class="flex items-center justify-between text-slate-400 text-xs">
+                    <span>HONEYTOKENS TRIPPED</span>
+                    <i data-lucide="flame" class="w-4 h-4 text-rose-500"></i>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-rose-500" id="stat-honeytokens">0</div>
+                <p class="text-xs text-slate-500 mt-1">Fake credential exfiltrations</p>
+            </div>
+
+            <div class="bg-cyber-card border border-cyber-border rounded-xl p-4">
+                <div class="flex items-center justify-between text-slate-400 text-xs">
+                    <span>COMMANDS CAPTURED</span>
+                    <i data-lucide="terminal" class="w-4 h-4 text-amber-400"></i>
+                </div>
+                <div class="mt-2 text-2xl font-bold text-slate-100" id="stat-commands">0</div>
+                <p class="text-xs text-slate-500 mt-1">Shell inputs analyzed</p>
+            </div>
+        </div>
+
+        <!-- Analytics Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- MITRE ATT&CK Matrix -->
+            <div class="lg:col-span-2 bg-cyber-card border border-cyber-border rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="crosshair" class="w-5 h-5 text-cyber-accent"></i>
+                        <h2 class="text-sm font-semibold tracking-wide">MITRE ATT&CK® TTP FREQUENCY</h2>
+                    </div>
+                    <span class="text-xs text-slate-400">Threat Behavior Breakdown</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="mitreChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Threat Origin Breakdown -->
+            <div class="bg-cyber-card border border-cyber-border rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-amber-400"></i>
+                            <h2 class="text-sm font-semibold tracking-wide">ATTACK ORIGIN BREAKDOWN</h2>
+                        </div>
+                    </div>
+                    <div id="originList" class="space-y-3 text-xs">
+                        <div class="text-slate-500 text-center py-8">Waiting for connection telemetry...</div>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-cyber-border text-[11px] text-slate-400 flex items-center justify-between">
+                    <span>GeoIP Service</span>
+                    <span class="text-cyan-400">ip-api.com (Cached)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attacker Sessions Table -->
+        <div class="bg-cyber-card border border-cyber-border rounded-xl overflow-hidden">
+            <div class="p-5 border-b border-cyber-border flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="list" class="w-5 h-5 text-cyan-400"></i>
+                    <h2 class="text-sm font-semibold tracking-wide">ATTACKER SESSIONS & FORENSICS</h2>
+                </div>
+                <span class="text-xs text-slate-400" id="sessionCount">0 recorded sessions</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-cyber-dark/60 border-b border-cyber-border text-slate-400 font-medium uppercase tracking-wider">
+                        <tr>
+                            <th class="px-5 py-3">Session ID</th>
+                            <th class="px-5 py-3">Attacker IP</th>
+                            <th class="px-5 py-3">Location</th>
+                            <th class="px-5 py-3">User Trap</th>
+                            <th class="px-5 py-3">Duration</th>
+                            <th class="px-5 py-3">Cmds</th>
+                            <th class="px-5 py-3">Risk Level</th>
+                            <th class="px-5 py-3">Status</th>
+                            <th class="px-5 py-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sessionsTableBody" class="divide-y divide-cyber-border text-slate-300">
+                        <tr>
+                            <td colspan="9" class="px-5 py-8 text-center text-slate-500">
+                                No attack sessions recorded yet. Connect to SSH on port 2222 to start telemetry!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Session Detail Modal -->
+    <div id="sessionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cyber-card border border-cyber-border rounded-xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden glow-accent">
+            <div class="p-4 border-b border-cyber-border flex items-center justify-between bg-cyber-dark/50">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="terminal" class="w-5 h-5 text-cyan-400"></i>
+                    <h3 class="font-bold text-sm" id="modalSessionTitle">Session Forensics</h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-4 flex-1">
+                <div id="modalHoneytokenAlert" class="hidden p-3 rounded-lg bg-rose-950/50 border border-rose-800 text-rose-300 text-xs"></div>
+                <div class="space-y-3" id="modalCommandsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+        let mitreChart = null;
+
+        function initChart(labels = [], data = []) {
+            const ctx = document.getElementById('mitreChart').getContext('2d');
+            if (mitreChart) mitreChart.destroy();
+            mitreChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels.length ? labels : ['T1082 (Sys Info)', 'T1033 (User)', 'T1087 (Accounts)', 'T1105 (Tool Transfer)', 'T1003 (Shadow)', 'T1552 (.env Key)'],
+                    datasets: [{
+                        label: 'Detected Invocations',
+                        data: data.length ? data : [0, 0, 0, 0, 0, 0],
+                        backgroundColor: 'rgba(6, 182, 212, 0.65)',
+                        borderColor: '#06b6d4',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        async function refreshData() {
+            try {
+                const [statsRes, sessionsRes] = await Promise.all([
+                    fetch('/api/stats'),
+                    fetch('/api/sessions')
+                ]);
+                const stats = await statsRes.json();
+                const sessions = await sessionsRes.json();
+
+                document.getElementById('stat-active').textContent = stats.active_sessions;
+                document.getElementById('stat-total').textContent = stats.total_sessions;
+                document.getElementById('stat-ips').textContent = stats.unique_ips;
+                document.getElementById('stat-honeytokens').textContent = stats.honeytoken_breaches;
+                document.getElementById('stat-commands').textContent = stats.total_commands;
+                document.getElementById('sessionCount').textContent = `${sessions.length} recorded sessions`;
+
+                // Update MITRE chart
+                const mitreKeys = Object.keys(stats.mitre_summary || {});
+                const mitreVals = Object.values(stats.mitre_summary || {});
+                if (mitreKeys.length) {
+                    initChart(mitreKeys, mitreVals);
+                } else {
+                    initChart();
+                }
+
+                // Update Origin Breakdown
+                updateOrigins(sessions);
+
+                // Update Table
+                renderSessionsTable(sessions);
+            } catch (err) {
+                console.error("Failed to refresh telemetry:", err);
+            }
+        }
+
+        function updateOrigins(sessions) {
+            const counts = {};
+            sessions.forEach(s => {
+                const c = s.country || 'Unknown';
+                counts[c] = (counts[c] || 0) + 1;
+            });
+            const list = document.getElementById('originList');
+            const entries = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 5);
+            if (!entries.length) {
+                list.innerHTML = '<div class="text-slate-500 text-center py-8">Waiting for connection telemetry...</div>';
+                return;
+            }
+            list.innerHTML = entries.map(([country, count]) => {
+                const pct = Math.round((count / sessions.length) * 100);
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between font-medium">
+                            <span>${country}</span>
+                            <span class="text-slate-400">${count} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-cyan-500 h-full rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderSessionsTable(sessions) {
+            const tbody = document.getElementById('sessionsTableBody');
+            if (!sessions.length) {
+                tbody.innerHTML = '<tr><td colspan="9" class="px-5 py-8 text-center text-slate-500">No attack sessions recorded yet. Connect to port 2222!</td></tr>';
+                return;
+            }
+            tbody.innerHTML = sessions.map(s => {
+                const riskColor = s.risk_score >= 80 ? 'text-rose-400 bg-rose-950/60 border-rose-800' :
+                                  s.risk_score >= 40 ? 'text-amber-400 bg-amber-950/60 border-amber-800' :
+                                  'text-emerald-400 bg-emerald-950/60 border-emerald-800';
+                const statusBadge = s.is_active ?
+                    '<span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] animate-pulse">ACTIVE</span>' :
+                    '<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px]">CLOSED</span>';
+
+                return `
+                    <tr class="hover:bg-cyber-dark/40 transition">
+                        <td class="px-5 py-3 font-mono font-medium text-cyan-400">${s.session_id}</td>
+                        <td class="px-5 py-3 font-mono">${s.client_ip}</td>
+                        <td class="px-5 py-3">${s.city ? `${s.city}, ` : ''}${s.country}</td>
+                        <td class="px-5 py-3 font-mono text-amber-300">${s.user}</td>
+                        <td class="px-5 py-3 text-slate-400">${s.duration}s</td>
+                        <td class="px-5 py-3">${s.command_count}</td>
+                        <td class="px-5 py-3">
+                            <span class="px-2 py-0.5 rounded text-[11px] border font-bold ${riskColor}">
+                                ${s.risk_score}/100
+                            </span>
+                        </td>
+                        <td class="px-5 py-3">${statusBadge}</td>
+                        <td class="px-5 py-3 text-right space-x-2">
+                            <button onclick="viewSession('${s.session_id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-[11px] transition">
+                                Forensics
+                            </button>
+                            <a href="/api/sessions/${s.session_id}/cast" download class="px-2.5 py-1 rounded bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-[11px] transition inline-block">
+                                .cast Replay
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function viewSession(sessionId) {
+            try {
+                const res = await fetch(`/api/sessions/${sessionId}`);
+                const data = await res.json();
+                document.getElementById('modalSessionTitle').textContent = `Session Forensics - ${data.summary.session_id} (${data.summary.client_ip})`;
+
+                const alertBox = document.getElementById('modalHoneytokenAlert');
+                if (data.honeytokens && data.honeytokens.length) {
+                    alertBox.classList.remove('hidden');
+                    alertBox.innerHTML = `<strong>🚨 HONEYTOKEN TRIPPED:</strong> Attacker accessed ${data.honeytokens.map(h => `<code class="bg-black/40 px-1 py-0.5 rounded text-rose-300">${h.path}</code>`).join(', ')}`;
+                } else {
+                    alertBox.classList.add('hidden');
+                }
+
+                const list = document.getElementById('modalCommandsList');
+                if (!data.commands.length) {
+                    list.innerHTML = '<div class="text-slate-500 text-center py-4">No commands executed during this session.</div>';
+                } else {
+                    list.innerHTML = data.commands.map(c => `
+                        <div class="bg-cyber-dark/80 rounded-lg p-3 border border-cyber-border space-y-1.5 terminal-font text-xs">
+                            <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                                <span>${c.user}@host:${c.cwd}$ <strong>${c.command}</strong></span>
+                                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-cyan-400">${c.provider} (${c.duration}s)</span>
+                            </div>
+                            <pre class="text-slate-300 whitespace-pre-wrap text-[11px] max-h-36 overflow-y-auto bg-black/40 p-2 rounded">${c.output ? c.output.trim() : '(No output)'}</pre>
+                            ${c.mitre_ids.length ? `<div class="text-[10px] text-amber-400">MITRE: ${c.mitre_ids.join(', ')}</div>` : ''}
+                        </div>
+                    `).join('');
+                }
+
+                document.getElementById('sessionModal').classList.remove('hidden');
+            } catch (err) {
+                console.error("Failed to load session details:", err);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('sessionModal').classList.add('hidden');
+        }
+
+        // Auto refresh every 3 seconds
+        initChart();
+        refreshData();
+        setInterval(refreshData, 3000);
+    </script>
+</body>
+</html>
